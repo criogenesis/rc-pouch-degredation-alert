@@ -38,21 +38,27 @@ public class PouchUsageLeft extends Plugin
 	private static final int LARGE_POUCH = 5512;
 	private static final int GIANT_POUCH = 5514;
 
+	private static final int COLOSSAL_POUCH = 26784;
+
 	private static final int MED_POUCH_USES = 44*6;
 	private static final int LARGE_POUCH_USES = 31*9;
 	private static final int GIANT_POUCH_USES = 120;
+
+	private static final int COLOSSAL_POUCH_USES = 320;
 
 	@Getter
 	private Map<Integer, Integer> itemUses = new HashMap<Integer, Integer>() {{
 			put(MED_POUCH, 0);
 			put(LARGE_POUCH, 0);
 			put(GIANT_POUCH, 0);
+		    put(COLOSSAL_POUCH, 0);
 	}};
 
 	public final Map<Integer, Integer> maxItemUses = new HashMap<Integer, Integer>() {{
 		put(MED_POUCH, MED_POUCH_USES);
 		put(LARGE_POUCH, LARGE_POUCH_USES);
 		put(GIANT_POUCH, GIANT_POUCH_USES);
+		put(COLOSSAL_POUCH, COLOSSAL_POUCH_USES);
 	}};
 
 	private Multiset<Integer> previousInventorySnapshot;
@@ -170,16 +176,20 @@ public class PouchUsageLeft extends Plugin
 		final int itemId;
 		final String itemName;
 
-		if (event.getWidgetId() == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId()) {
-			ItemContainer inventoryContainer = client.getItemContainer(InventoryID.INVENTORY);
-			Item item = inventoryContainer.getItem(inventoryIndex);
-			itemId = item.getId();
-			itemName = item.toString();
-		} else {
-			final ItemComposition itemComposition = itemManager.getItemComposition(event.getId());
-			itemId = itemComposition.getId();
-			itemName = itemComposition.getName();
-		}
+//		if (event.getWidgetId() == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId()) {
+//			ItemContainer inventoryContainer = client.getItemContainer(InventoryID.INVENTORY);
+//			Item item = inventoryContainer.getItem(inventoryIndex);
+//			itemId = item.getId();
+//			itemName = item.toString();
+//		} else {
+//			final ItemComposition itemComposition = itemManager.getItemComposition(event.getId());
+//			itemId = itemComposition.getId();
+//			itemName = itemComposition.getName();
+//		}
+		ItemContainer inventoryContainer = client.getItemContainer(InventoryID.INVENTORY);
+		Item item = inventoryContainer.getItem(inventoryIndex);
+		itemId = item.getId();
+		itemName = item.toString();
 
 		if (!itemUses.containsKey(itemId)) {
 			log.info("Filled an item that we don't know about: {} with ID: {}", itemName, itemId);
